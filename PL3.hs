@@ -389,16 +389,16 @@ e) NO se permite modificar NINGUNA de las lineas anteriores a la linea 355.
 
 
 --
-g11= Con (Var 1) (Var 2)       -- x1 & x2
-g11b= Con g11 (Neg $ Var 1)     -- x1 & x2 & !x1
-g22= Con (Var 3) (Neg $ Var 4) -- x3 & !x4
-g22b= Con g22 (Neg $ Var 3)     --  x3 & !x4 & !x3
-g33= Con (Neg $ Var 3) (Var 4) -- !x3 & x4
-g33b= Con g33 (Var 3)           -- !x3 & x4 & x3
-g44= Dis g11 g22 --(x1 & x2) | (x3 & !x4)
-g44b= Dis g11b g22b -- (x1 & x2 & !x1) | (x3 & !x4 & !x3)
-g55= Dis g44 g33 -- ((x1 & x2) | (x3 & !x4)) | (!x3 & x4)
-g66= Dis g44b g33b
+g10= Con (Var 1) (Var 2)       -- x1 & x2
+g10b= Con g11 (Neg $ Var 1)     -- x1 & x2 & !x1
+g11= Con (Var 3) (Neg $ Var 4) -- x3 & !x4
+g11b= Con g22 (Neg $ Var 3)     --  x3 & !x4 & !x3
+g12= Con (Neg $ Var 3) (Var 4) -- !x3 & x4
+g12b= Con g33 (Var 3)           -- !x3 & x4 & x3
+g13= Dis g11 g22 --(x1 & x2) | (x3 & !x4)
+g13b= Dis g11b g22b -- (x1 & x2 & !x1) | (x3 & !x4 & !x3)
+g15= Dis g44 g33 -- ((x1 & x2) | (x3 & !x4)) | (!x3 & x4)
+g15= Dis g44b g33b
 
 showConLit :: PL -> String
 --Transforma una Conjuncion de literales a string
@@ -459,16 +459,16 @@ dnf2LListLit phi = case phi of
     _                -> error $ "dnf2LListLit: phi no esta en DNF, phi="++(show phi)
 --
 --Tests:
+--dnf2LListLit g10
+--showDNF  g10
 --dnf2LListLit g11
 --showDNF  g11
---dnf2LListLit g22
---showDNF  g22
---dnf2LListLit g33
---showDNF  g33
---dnf2LListLit g44
---showDNF  g44
---dnf2LListLit g55
---showDNF  g55
+--dnf2LListLit g13
+--showDNF  g13
+--dnf2LListLit g14
+--showDNF  g14
+--dnf2LListLit g15
+--showDNF  g15
 --
 
 terminoTrue :: [PL] -> Bool
@@ -501,13 +501,13 @@ decideDNFenVAL :: PL -> Bool
 decideDNFenVAL phi = termListTrue (dnf2LListLit phi)
 --
 --Tests en ghci:
---showDNF g55
---decideDNFenVAL g55
---inSAT g55
---inSAT (Neg g55)
+--showDNF g15
+--decideDNFenVAL g15
+--inSAT g15
+--inSAT (Neg g15)
 --
---showDNF g66
---decideDNFenVAL g66
---inSAT g66
---inSAT (Neg g66)
+--showDNF g16
+--decideDNFenVAL g16
+--inSAT g16
+--inSAT (Neg g16)
 --
